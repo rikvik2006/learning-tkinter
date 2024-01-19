@@ -1,0 +1,2 @@
+- Button color: #3B3B3B
+- Full Background color: #202020
