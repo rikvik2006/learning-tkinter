@@ -1,7 +1,10 @@
 import time
 import subprocess
+import sys
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from pathlib import Path
+
 
 class FileChangeHandler(FileSystemEventHandler):
     def __init__(self, cmd):
@@ -12,15 +15,20 @@ class FileChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
         if "__pycache__" in event.src_path:
             return
-        print(f'File {event.src_path} has been modified, restarting the program.')
+        print(f"File {event.src_path} has been modified, restarting the program.")
         self.process.kill()
         self.process = subprocess.Popen(self.cmd)
 
+
 if __name__ == "__main__":
-    cmd = ['python312', 'main.py']
+    cmd = [sys.executable, "main.py"]
     event_handler = FileChangeHandler(cmd)
     observer = Observer()
-    observer.schedule(event_handler, path='Z:\\4E INFO\\Informatica\\TkInter-github-repo\\tkinter-calculator', recursive=True)
+    observer.schedule(
+        event_handler,
+        path=Path.joinpath(Path(__file__).parent.absolute(), "tkinter-calculator"),
+        recursive=True,
+    )
     observer.start()
 
     try:
