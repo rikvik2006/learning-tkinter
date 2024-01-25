@@ -2,10 +2,11 @@ from multiprocessing import set_forkserver_preload
 from tkinter import ttk
 from components.CalculatorButton import CalculatorButton
 
+
 class ButtonsFrame(ttk.Frame):
     def __init__(self, master, layout, **kwargs):
         super().__init__(master, **kwargs)
-        self.grid(row=1, column=0, sticky="nsew")
+        self.grid(**layout)
         self.create_buttons()
 
     def create_buttons(self):
@@ -34,6 +35,8 @@ class ButtonsFrame(ttk.Frame):
                     master=self,
                     text=button_text,
                     style="Buttons.TButton",
-                    command=lambda text=button_text: self.master.display.add_text(text),
+                    command=lambda text=button_text: self.master.components[
+                        "display"
+                    ].add_text(text),
                 )
                 button.grid(row=row_index, column=column_index, sticky="nsew")

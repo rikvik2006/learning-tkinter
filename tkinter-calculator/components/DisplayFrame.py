@@ -1,15 +1,14 @@
-from tkinter import ANCHOR, ttk
-
-from click import style
+from tkinter import ttk
 from components.CLabel import CLabel
 
+
 class DisplayFrame(ttk.Frame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, layout, **kwargs):
         super().__init__(master, **kwargs)
-        self.grid(row=0, column=0, sticky="nsew")
+        self.grid(**layout)
         self.create_display()
         self.display.value.set("0")
-        
+
     def create_display(self):
         self.display = CLabel(
             master=self,
