@@ -8,9 +8,7 @@ class CLabel(ttk.Label):
 
         # Impostando una textvariable, il testo del widget verrà aggiornato automaticamente quando il valore della variabile cambia
         # Ma il parametro text verrà ignorato
-        super().__init__(
-            master=master, textvariable=self.value, **kwargs
-        )
+        super().__init__(master=master, textvariable=self.value, **kwargs)
 
-        # Impostaiamo la textvariable con il valore passato come parametro
+        # Impostaiamo la textvariable con il valore di text passato come parametro
         self.value.set(kwargs.get("text", ""))
