@@ -44,3 +44,13 @@ class DisplayFrame(ttk.Frame):
             self.display.value.set(text)
         else:
             self.display.value.set(current_text + text)
+
+    def clear(self):
+        self.display.value.set("0")
+
+    def backspace(self):
+        current_text = self.display.value.get()
+        if len(current_text) > 1:
+            self.display.value.set(current_text[:-1])
+        else:
+            self.display.value.set("0")
