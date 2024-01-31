@@ -45,9 +45,12 @@ class ButtonsFrame(ttk.Frame):
                 button.grid(row=row_index, column=column_index, sticky="nsew")
                 self.widget_buttons.append(button)
 
+                # Aggiungo al bottone l'evento di click con il tasto sinitro del mouse
                 button.bind("<Button-1>", lambda event: self.on_click(event=event))
 
+    # Metodo di callback per l'evento di click con il tasto sinitro del mouse di un bottone
     def on_click(self, event: Tk.Event):
+        # In base al testo del bottone eseguiamo l'azione corrispondente
         display = self.master.components["display"]
         if event.widget["text"] == "C":
             display.clear()
@@ -56,10 +59,20 @@ class ButtonsFrame(ttk.Frame):
         elif event.widget["text"] == "BC":
             display.backspace()
         elif event.widget["text"] == "MEM":
-            pass
+            self.__display_memory()
         elif event.widget["text"] == "STO":
-            pass
+            self.__store_to_memory()
         elif event.widget["text"] == "M+":
-            pass
+            self.__add_to_memory()
         else:
             display.add_text(event.widget["text"])
+
+    def __display_memory(self):
+        memory_number = self.master.memory.get_memory()
+        print("📝 Memory number", memory_number)
+
+    def __store_to_memory(self):
+        pass
+
+    def __add_to_memory(self):
+        pass

@@ -4,6 +4,7 @@ from utils.types import LayoutPositionGrid
 from components.CalculatorButton import CalculatorButton
 from components.ButtonsFrame import ButtonsFrame
 from components.DisplayFrame import DisplayFrame
+from hooks.memory import Memory
 
 
 class App(tk.Tk):
@@ -26,6 +27,7 @@ class App(tk.Tk):
         ]
         self.components = {}
         self.create_layout()
+        self.initialize_memory_manager()
 
     def create_layout(self):
         for name, component, layout in self.layout:
@@ -35,6 +37,10 @@ class App(tk.Tk):
         self.style.theme_use("alt")
         self.style.configure("App.TFrame", background="#1D1D1D")
         self.configure(background="#202020")
+
+    def initialize_memory_manager(self):
+        # Instaziamo una classe memoria per l'intera calcolatrice, dato che ogni calcoaltrice ha una sola memoria
+        self.memory = Memory()
 
 
 if __name__ == "__main__":
