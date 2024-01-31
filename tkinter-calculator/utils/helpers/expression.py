@@ -82,8 +82,10 @@ class Expression:
     @staticmethod
     def get_expressions_numbers(expression: str) -> list[Union[int, float]]:
         """Returns a list of numbers from an expression, removing operators"""
-        # Regex che trova tutti i numeri all'interno di una stringa (es. "1+2" -> ["1", "2"]),
-        regex = r"\b\d+(?:\.\d+)?\b"
+        # Regex che trova tutti i numeri all'interno di una stringa (es. "1+2" -> ["1", "+2"]), compresi i numeri negativi (es. "-1+2" -> ["-1", "+2"])
+        # Matenere il segno è utile perché altrimenti non potremmo sapere se il numero è negativo o positivo
+        # Prova la regex su https://regexr.com/7r9bs
+        regex = r"[+-]?\b\d+(?:\.\d+)?\b"
         numbers = re.findall(regex, expression, flags=re.MULTILINE)
         # Utilizzo il metodo statico della classe helper per convertire i numeri da stringhe a numeri, ma se sono degli interi li converto in interi mentre se sono dei float li converto in float
         return Expression.convert_string_numbers_to_numbers(numbers)

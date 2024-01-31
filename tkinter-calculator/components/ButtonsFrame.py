@@ -78,7 +78,10 @@ class ButtonsFrame(ttk.Frame):
         if display.get_text() == "0":
             display.set_text(str(memory_number))
         elif Expression.is_operator(display.get_text()[-1]):
-            display.add_text(str(memory_number))
+            if memory_number < 0:
+                display.add_text("(" + str(memory_number) + ")")
+            else:
+                display.add_text(str(memory_number))
         else:
             display.set_text(str(memory_number))
 
