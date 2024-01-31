@@ -38,17 +38,33 @@ class DisplayFrame(ttk.Frame):
             font=("Arial", 30),
         )
 
-    def add_text(self, text):
+    # Metodi per la gestione del display
+
+    # Restituisce il testo attuale del display
+    def get_text(self) -> str:
+        return self.display.value.get()
+
+    # Imposta il testo del display
+    def set_text(self, text: str) -> None:
+        if isinstance(text, str):
+            self.display.value.set(text)
+        else:
+            raise TypeError("Text must be a string")
+
+    # Agginge un testo al display
+    def add_text(self, text) -> None:
         current_text = self.display.value.get()
         if current_text == "0":
             self.display.value.set(text)
         else:
             self.display.value.set(current_text + text)
 
-    def clear(self):
+    # Elimina il testo attuale del display
+    def clear(self) -> None:
         self.display.value.set("0")
 
-    def backspace(self):
+    # Cancella l'ultimo caratere dal display
+    def backspace(self) -> None:
         current_text = self.display.value.get()
         if len(current_text) > 1:
             self.display.value.set(current_text[:-1])
