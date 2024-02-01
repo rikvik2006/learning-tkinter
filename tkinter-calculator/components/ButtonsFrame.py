@@ -10,6 +10,9 @@ class ButtonsFrame(ttk.Frame):
         super().__init__(master, **kwargs)
         self.grid(**layout)
         self.create_buttons(buttons)
+        self.current_char = 0
+        self.old_char = None
+        self.allows_write = True
 
     def create_buttons(self, buttons):
         self.widget_buttons = []
@@ -44,11 +47,14 @@ class ButtonsFrame(ttk.Frame):
     def on_click(self, event: Tk.Event):
         # In base al testo del bottone eseguiamo l'azione corrispondente
         display = self.master.components["display"]
+        info_display = self.master.components["info_display"]
         if event.widget["text"] == "C":
+            self.__set_to_normal_state(current_char=0, old_char=None)
             display.clear()
         elif event.widget["text"] == "=":
             self.__calculate_result()
         elif event.widget["text"] == "BC":
+            self.__set_to_normal_state(current_char=self.old_char, old_char=None)
             display.backspace()
         elif event.widget["text"] == "MEM":
             self.__display_memory()
@@ -57,7 +63,18 @@ class ButtonsFrame(ttk.Frame):
         elif event.widget["text"] == "M+":
             self.__add_to_memory()
         else:
+            if not self.allows_write:
+                return
+
+            button_text = event.widget["text"]
+            self.old_char = self.current_char
+            self.current_char = button_text
             display.add_text(event.widget["text"])
+            if Expression.is_symbol(self.current_char) and Expression.is_symbol(
+                self.old_char
+            ):
+                self.allows_write = False
+                info_display.set_err("Errore di sintassi")
 
     # Mostra il contenuto della memoria sul display
     def __display_memory(self):
@@ -77,6 +94,9 @@ class ButtonsFrame(ttk.Frame):
         else:
             display.set_text(str(memory_number))
 
+        self.__set_to_normal_state(
+            current_char=memory_number, old_char=self.current_char
+        )
         print("📝 Memory number", memory_number)
 
     # Salva il numero attuale nel display nella memoria (se è presente una espressione viene salvato solo l'ultimo numero)
@@ -102,9 +122,22 @@ class ButtonsFrame(ttk.Frame):
 
     def __calculate_result(self):
         display = self.master.components["display"]
+        info_display = self.master.components["info_display"]
         display_current_text = display.get_text()
         result = Calculation.calculate(display_current_text)
         print("➕", result)
+        print("🫶", type(result))
 
         if isinstance(result, (int, float)):
             display.set_text(str(result))
+            self.__set_to_normal_state(current_char=result, old_char=None)
+        elif isinstance(result, str):
+            info_display.set_err(result)
+            self.self__set_to_normal_state(current_char=0, old_char=None)
+
+    def __set_to_normal_state(self, current_char, old_char):
+        info_display = self.master.components["info_display"]
+        self.current_char = current_char
+        self.old_char = old_char
+        self.allows_write = True
+        info_display.clear_err()

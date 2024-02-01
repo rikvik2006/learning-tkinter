@@ -31,6 +31,10 @@ class Expression:
         """Checks if a character is a parenthesis"""
         return char in ["(", ")"]
 
+    def is_symbol(char: str):
+        """Checks if a character is a symbol"""
+        return char in ["+", "-", "*", "/", "(", ")", "."]
+
     @staticmethod
     def is_valid(char: str):
         """Checks if a character is valid"""

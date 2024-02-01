@@ -1,5 +1,6 @@
 from tkinter import ttk
 from components.CLabel import CLabel
+from utils.helpers.expression import Expression
 
 
 class DisplayFrame(ttk.Frame):
@@ -8,6 +9,7 @@ class DisplayFrame(ttk.Frame):
         self.grid(**layout)
         self.create_display()
         self.create_style()
+        self.__setup_listeners()
         self.display.value.set("0")
 
     def create_display(self):
@@ -37,6 +39,13 @@ class DisplayFrame(ttk.Frame):
             foreground="#FFFFFF",
             font=("Arial", 30),
         )
+
+    def __setup_listeners(self):
+        # Crea un listener onchange per la stringVar del display
+        self.display.value.trace_add("write", self.__on_change)
+
+    def __on_change(self, *args):
+        pass
 
     # Metodi per la gestione del displayFrame
 

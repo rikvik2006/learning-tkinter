@@ -24,13 +24,12 @@ class InfoDisplayFrame(ttk.Frame):
             sticky="nsew",
         )
         # self.memory_display.config(width=1)
-        self.error_dispalay = CLabel(
+        self.error_display = CLabel(
             master=self,
-            text="Errore Errore Error Error",
             anchor="ne",
             style="InfoDisplay.TLabel",
         )
-        self.error_dispalay.grid(
+        self.error_display.grid(
             row=0,
             column=1,
             sticky="ne",
@@ -41,9 +40,9 @@ class InfoDisplayFrame(ttk.Frame):
         # Imposta la grandezza della colonna 0 al 100% della grandezza del frame padre
         self.grid_columnconfigure(1, weight=1)
 
-        self.style = ttk.Style()
-        self.style.theme_use("alt")
-        self.style.configure(
+        self.info_style = ttk.Style()
+        self.info_style.theme_use("alt")
+        self.info_style.configure(
             "InfoDisplay.TLabel",
             background="#1D1D1D",
             foreground="#FFFFFF",
@@ -57,3 +56,12 @@ class InfoDisplayFrame(ttk.Frame):
             self.memory_display.value.set("M")
         else:
             self.memory_display.value.set("")
+
+    def set_err(self, err: str) -> None:
+        self.error_display.value.set(err)
+
+    def clear_err(self) -> None:
+        self.error_display.value.set("")
+
+    def get_err(self) -> str:
+        return self.error_display.value.get()

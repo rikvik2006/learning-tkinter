@@ -42,6 +42,7 @@ class App(tk.Tk):
                 master=self,
                 layout=LayoutPositionGrid(row=3, column=0, sticky="nesw")(),
                 buttons=STANDARD_CALCULATOR_BUTTONS,
+                style="App.TFrame",
             )
         )
         self.calculator.append(
@@ -49,6 +50,7 @@ class App(tk.Tk):
                 master=self,
                 layout=LayoutPositionGrid(row=3, column=0, sticky="nesw")(),
                 buttons=SCIENTIFIC_CALCULATOR_BUTTONS,
+                style="App.TFrame",
             )
         )
         # Essendo nella stessa cella della griglia, "tiriamo su", la calcolatrice standard per mostrarla
@@ -60,7 +62,9 @@ class App(tk.Tk):
 
     def create_layout(self):
         for name, component, layout in self.layout:
-            self.components[name] = component(master=self, layout=layout)
+            self.components[name] = component(
+                master=self, layout=layout, style="App.TFrame"
+            )
 
     def configure_style(self):
         self.style.theme_use("alt")
