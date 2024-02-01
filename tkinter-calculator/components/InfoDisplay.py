@@ -14,7 +14,6 @@ class InfoDisplayFrame(ttk.Frame):
     def __create_displays(self):
         self.memory_display = CLabel(
             master=self,
-            text="M",
             anchor="nw",
             style="InfoDisplay.TLabel",
         )
@@ -50,3 +49,11 @@ class InfoDisplayFrame(ttk.Frame):
             foreground="#FFFFFF",
             font=("Arial", 15),
         )
+
+    # Metodi per la gestione del info display
+
+    def set_memory_indicator(self, status: bool) -> None:
+        if status:
+            self.memory_display.value.set("M")
+        else:
+            self.memory_display.value.set("")

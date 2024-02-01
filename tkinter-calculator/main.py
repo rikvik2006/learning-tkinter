@@ -69,7 +69,7 @@ class App(tk.Tk):
 
     def initialize_memory_manager(self):
         # Instaziamo una classe memoria per l'intera calcolatrice, dato che ogni calcoaltrice ha una sola memoria
-        self.memory = Memory()
+        self.memory = Memory(master=self)
 
 
 if __name__ == "__main__":
