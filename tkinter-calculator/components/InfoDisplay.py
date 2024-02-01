@@ -8,28 +8,39 @@ class InfoDisplayFrame(ttk.Frame):
     def __init__(self, master, layout, **kwargs):
         super().__init__(master, **kwargs)
         self.grid(**layout)
-        self.create_display()
-        self.create_style()
-        self.display.value.set("M")
+        self.__create_displays()
+        self.__create_style()
 
-    def create_display(self):
-        self.display = CLabel(
+    def __create_displays(self):
+        self.memory_display = CLabel(
             master=self,
-            text="0",
+            text="M",
             anchor="nw",
             style="InfoDisplay.TLabel",
         )
         # Posiziona il widget nella posizione 0,0 del frame
-        self.display.grid(
+        self.memory_display.grid(
             row=0,
             column=0,
             sticky="nsew",
         )
-        self.display.config(width=1)
+        # self.memory_display.config(width=1)
+        self.error_dispalay = CLabel(
+            master=self,
+            text="Errore Errore Error Error",
+            anchor="ne",
+            style="InfoDisplay.TLabel",
+        )
+        self.error_dispalay.grid(
+            row=0,
+            column=1,
+            sticky="ne",
+            rowspan=2,
+        )
 
-    def create_style(self):
+    def __create_style(self):
         # Imposta la grandezza della colonna 0 al 100% della grandezza del frame padre
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
 
         self.style = ttk.Style()
         self.style.theme_use("alt")
