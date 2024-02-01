@@ -4,6 +4,7 @@ from utils.types import LayoutPositionGrid
 from components.CalculatorButton import CalculatorButton
 from components.ButtonsFrame import ButtonsFrame
 from components.DisplayFrame import DisplayFrame
+from components.InfoDisplay import InfoDisplayFrame
 from hooks.memory import Memory
 
 
@@ -15,14 +16,19 @@ class App(tk.Tk):
 
         self.layout = [
             [
+                "info_display",
+                InfoDisplayFrame,
+                LayoutPositionGrid(row=0, column=0, sticky="nsew")(),
+            ],
+            [
                 "display",
                 DisplayFrame,
-                LayoutPositionGrid(row=0, column=0, sticky="nsew")(),
+                LayoutPositionGrid(row=1, column=0, sticky="nsew")(),
             ],
             [
                 "button_frame",
                 ButtonsFrame,
-                LayoutPositionGrid(row=1, column=0, sticky="nesw")(),
+                LayoutPositionGrid(row=2, column=0, sticky="nesw")(),
             ],
         ]
         self.components = {}

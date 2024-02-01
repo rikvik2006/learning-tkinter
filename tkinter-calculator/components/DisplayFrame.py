@@ -15,7 +15,7 @@ class DisplayFrame(ttk.Frame):
             master=self,
             text="0",
             anchor="nw",
-            style="Display.TLabel",
+            style="DisplayFrame.TLabel",
         )
         # Posiziona il widget nella posizione 0,0 del frame
         self.display.grid(
@@ -32,13 +32,13 @@ class DisplayFrame(ttk.Frame):
         self.style = ttk.Style()
         self.style.theme_use("alt")
         self.style.configure(
-            "Display.TLabel",
+            "DisplayFrame.TLabel",
             background="#1D1D1D",
             foreground="#FFFFFF",
             font=("Arial", 30),
         )
 
-    # Metodi per la gestione del display
+    # Metodi per la gestione del displayFrame
 
     # Restituisce il testo attuale del display
     def get_text(self) -> str:
