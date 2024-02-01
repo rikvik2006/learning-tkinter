@@ -5,7 +5,9 @@ from components.CalculatorButton import CalculatorButton
 from components.ButtonsFrame import ButtonsFrame
 from components.DisplayFrame import DisplayFrame
 from components.InfoDisplay import InfoDisplayFrame
+from components.CalculatorSelector import CalculatorSelector
 from hooks.memory import Memory
+from constants import STANDARD_CALCULATOR_BUTTONS, SCIENTIFIC_CALCULATOR_BUTTONS
 
 
 class App(tk.Tk):
@@ -13,6 +15,7 @@ class App(tk.Tk):
         super().__init__(**kwargs)
         self.style = ttk.Style()
         self.configure_style()
+        self.title("Black Calculator")
 
         self.layout = [
             [
@@ -26,11 +29,31 @@ class App(tk.Tk):
                 LayoutPositionGrid(row=1, column=0, sticky="nsew")(),
             ],
             [
-                "button_frame",
-                ButtonsFrame,
+                "calculator_selector",
+                CalculatorSelector,
                 LayoutPositionGrid(row=2, column=0, sticky="nesw")(),
             ],
         ]
+
+        # Lista di ButtonFrame, contiene i bottone di ogni calcolatrice, questo ci permette quindi di cambiare calcualtrice
+        self.calculator: list[ButtonsFrame] = []
+        self.calculator.append(
+            ButtonsFrame(
+                master=self,
+                layout=LayoutPositionGrid(row=3, column=0, sticky="nesw")(),
+                buttons=STANDARD_CALCULATOR_BUTTONS,
+            )
+        )
+        self.calculator.append(
+            ButtonsFrame(
+                master=self,
+                layout=LayoutPositionGrid(row=3, column=0, sticky="nesw")(),
+                buttons=SCIENTIFIC_CALCULATOR_BUTTONS,
+            )
+        )
+        # Essendo nella stessa cella della griglia, "tiriamo su", la calcolatrice standard per mostrarla
+        self.calculator[0].tkraise()
+
         self.components = {}
         self.create_layout()
         self.initialize_memory_manager()

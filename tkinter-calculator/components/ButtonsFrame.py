@@ -6,21 +6,12 @@ from utils.helpers.calculation import Calculation
 
 
 class ButtonsFrame(ttk.Frame):
-    def __init__(self, master, layout, **kwargs):
+    def __init__(self, master, layout, buttons, **kwargs):
         super().__init__(master, **kwargs)
         self.grid(**layout)
-        self.create_buttons()
+        self.create_buttons(buttons)
 
-    def create_buttons(self):
-        self.buttons = [
-            ["MEM", "STO", "M+", "C"],
-            ["7", "8", "9", "BC"],
-            ["4", "5", "6", "/"],
-            ["1", "2", "3", "*"],
-            ["0", ".", "+", "-"],
-            ["(", ")", "="],
-        ]
-
+    def create_buttons(self, buttons):
         self.widget_buttons = []
 
         # for row_index, row in enumerate(self.buttons):
@@ -33,7 +24,7 @@ class ButtonsFrame(ttk.Frame):
         #         )
         #         button.grid(row=row_index, column=column_index, sticky="nsew")
 
-        for row_index, row in enumerate(self.buttons):
+        for row_index, row in enumerate(buttons):
             for column_index, button_text in enumerate(row):
                 button = CalculatorButton(
                     master=self,
