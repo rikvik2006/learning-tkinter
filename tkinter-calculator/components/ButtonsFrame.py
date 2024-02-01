@@ -1,5 +1,9 @@
+from pickletools import read_uint1
+import re
 import tkinter as Tk
+from typing import Union
 from tkinter import ttk
+from unittest import result
 from components.CalculatorButton import CalculatorButton
 from utils.helpers.expression import Expression
 from utils.helpers.calculation import Calculation
@@ -52,7 +56,7 @@ class ButtonsFrame(ttk.Frame):
             self.__set_to_normal_state(current_char=0, old_char=None)
             display.clear()
         elif event.widget["text"] == "=":
-            self.__calculate_result()
+            self.__on_click_equal()
         elif event.widget["text"] == "BC":
             self.__set_to_normal_state(current_char=self.old_char, old_char=None)
             display.backspace()
@@ -62,6 +66,30 @@ class ButtonsFrame(ttk.Frame):
             self.__store_to_memory()
         elif event.widget["text"] == "M+":
             self.__add_to_memory()
+
+        elif event.widget["text"] == "sin":
+            # self.__calculate_sine()
+            self.__display_result(calculation=Calculation.sine, ndigits=4)
+        elif event.widget["text"] == "cos":
+            # self.__calculate_cosine()
+            self.__display_result(calculation=Calculation.cosine, ndigits=4)
+        elif event.widget["text"] == "tan":
+            # self.__calculate_tangent()
+            self.__display_result(calculation=Calculation.tangent, ndigits=4)
+        elif event.widget["text"] == "!":
+            # self.__calculate_factorial()
+            self.__display_result(calculation=Calculation.factorial, ndigits=0)
+        elif event.widget["text"] == "x²":
+            self.__display_result(calculation=Calculation.square_power, ndigits=4)
+        elif event.widget["text"] == "xⁿ":
+            self.__calculate_n_power()
+        elif event.widget["text"] == "√":
+            pass
+        elif event.widget["text"] == "ⁿ√":
+            pass
+        elif event.widget["text"] == "1/x":
+            # self.__calculate_mutual()
+            self.__display_result(calculation=Calculation.mutual, ndigits=6)
         else:
             if not self.allows_write:
                 return
@@ -120,24 +148,50 @@ class ButtonsFrame(ttk.Frame):
         memory.add_to_memory(numbers[-1])
         print("🔗 Saved value", memory.get_memory())
 
-    def __calculate_result(self):
+    def __on_click_equal(self):
         display = self.master.components["display"]
         info_display = self.master.components["info_display"]
         display_current_text = display.get_text()
-        result = Calculation.calculate(display_current_text)
+        result = self.__calculate_result(display_current_text)
+
+        if isinstance(result, (int, float)):
+            display.set_text(str(result))
+        elif isinstance(result, str):
+            info_display.set_err(result)
+
+    def __calculate_result(self, expression: str) -> Union[int, float, str]:
+        result = Calculation.calculate(expression)
         print("➕", result)
         print("🫶", type(result))
 
         if isinstance(result, (int, float)):
-            display.set_text(str(result))
             self.__set_to_normal_state(current_char=result, old_char=None)
         elif isinstance(result, str):
-            info_display.set_err(result)
-            self.self__set_to_normal_state(current_char=0, old_char=None)
+            self.__set_to_normal_state(current_char=0, old_char=None)
 
+        return result
+
+    # Serve per modificare l'ho stato della calcolatrice modificando gli utilmi due caratteri inseriti, questo serve per gestire gli errori
     def __set_to_normal_state(self, current_char, old_char):
         info_display = self.master.components["info_display"]
         self.current_char = current_char
         self.old_char = old_char
         self.allows_write = True
         info_display.clear_err()
+
+    def __display_result(self, calculation, ndigits=0):
+        display = self.master.components["display"]
+        info_display = self.master.components["info_display"]
+        display_current_text = display.get_text()
+        result = self.__calculate_result(display_current_text)
+
+        if isinstance(result, (int, float)):
+            result = calculation(result)
+            if isinstance(result, (int, float)):
+                if ndigits > 0:
+                    result = round(result, ndigits)
+                display.set_text(str(result))
+            elif isinstance(result, str):
+                info_display.set_err(result)
+        elif isinstance(result, str):
+            info_display.set_err(result)
