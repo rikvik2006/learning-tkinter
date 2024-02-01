@@ -2,6 +2,7 @@ import tkinter as Tk
 from tkinter import ttk
 from components.CalculatorButton import CalculatorButton
 from utils.helpers.expression import Expression
+from utils.helpers.calculation import Calculation
 
 
 class ButtonsFrame(ttk.Frame):
@@ -55,7 +56,7 @@ class ButtonsFrame(ttk.Frame):
         if event.widget["text"] == "C":
             display.clear()
         elif event.widget["text"] == "=":
-            pass
+            self.__calculate_result()
         elif event.widget["text"] == "BC":
             display.backspace()
         elif event.widget["text"] == "MEM":
@@ -99,8 +100,6 @@ class ButtonsFrame(ttk.Frame):
 
     # Esegue una somma algebrica con il numero contenuto in memoria e quello mostrato nel display
     # (se è presente una espressione viene sommato solo l'ultimo numero con il contenuto della memoria)
-    # TODO: Se il numero è negativo non deve essere sommato ma deve essere sotratto
-    # Il problema è che al numero viene rimosso il suo segno, quindi non sappaimo se è positivo o negativo
     def __add_to_memory(self):
         display = self.master.components["display"]
         memory = self.master.memory
@@ -109,3 +108,12 @@ class ButtonsFrame(ttk.Frame):
         print("☕", numbers)
         memory.add_to_memory(numbers[-1])
         print("🔗 Saved value", memory.get_memory())
+
+    def __calculate_result(self):
+        display = self.master.components["display"]
+        display_current_text = display.get_text()
+        result = Calculation.calculate(display_current_text)
+        print("➕", result)
+
+        if isinstance(result, (int, float)):
+            display.set_text(str(result))
