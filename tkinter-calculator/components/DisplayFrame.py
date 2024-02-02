@@ -1,4 +1,3 @@
-from operator import indexOf
 from tkinter import ttk
 from components.CLabel import CLabel
 from utils.helpers.expression import Expression

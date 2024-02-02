@@ -1,4 +1,3 @@
-from email.headerregistry import UniqueAddressHeader
 import re
 from typing import Union
 

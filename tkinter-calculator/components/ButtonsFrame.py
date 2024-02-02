@@ -1,5 +1,3 @@
-from distutils.core import run_setup
-from pickletools import read_uint1
 import re
 import tkinter as Tk
 from typing import Union

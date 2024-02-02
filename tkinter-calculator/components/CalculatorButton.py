@@ -1,6 +1,5 @@
 from tkinter import ttk
 import tkinter as tk
-from turtle import backward, color
 
 
 class CalculatorButton(ttk.Button):
