@@ -1,3 +1,4 @@
+from distutils.core import run_setup
 from pickletools import read_uint1
 import re
 import tkinter as Tk
@@ -84,7 +85,7 @@ class ButtonsFrame(ttk.Frame):
         elif event.widget["text"] == "xⁿ":
             self.__calculate_n_power()
         elif event.widget["text"] == "√":
-            pass
+            self.__display_result(calculation=Calculation.square_root, ndigits=4)
         elif event.widget["text"] == "ⁿ√":
             pass
         elif event.widget["text"] == "1/x":
@@ -155,21 +156,47 @@ class ButtonsFrame(ttk.Frame):
         result = self.__calculate_result(display_current_text)
 
         if isinstance(result, (int, float)):
+            result = round(result, 4)
             display.set_text(str(result))
         elif isinstance(result, str):
             info_display.set_err(result)
 
     def __calculate_result(self, expression: str) -> Union[int, float, str]:
-        result = Calculation.calculate(expression)
-        print("➕", result)
-        print("🫶", type(result))
+        if not ("^" in expression):
+            result = Calculation.calculate(expression)
+            print("➕", result)
+            print("🫶", type(result))
 
-        if isinstance(result, (int, float)):
-            self.__set_to_normal_state(current_char=result, old_char=None)
-        elif isinstance(result, str):
-            self.__set_to_normal_state(current_char=0, old_char=None)
+            if isinstance(result, (int, float)):
+                if isinstance(result, float):
+                    result = Expression.remove_blank_floatingpoints(result)
+                self.__set_to_normal_state(current_char=result, old_char=None)
+            elif isinstance(result, str):
+                self.__set_to_normal_state(current_char=0, old_char=None)
+        else:
+            base, exponent = expression.split("^")
+            exponent = Calculation.calculate(exponent)
+            if isinstance(exponent, str):
+                self.__set_to_normal_state(current_char=0, old_char=None)
+                return exponent
+            elif isinstance(exponent, (int, float)):
+                base = base.replace("(", "").replace(")", "")
+                base = Expression.convert_string_numbers_to_numbers([base])[0]
+                result = Calculation.power_of_n(base, exponent)
 
+                if isinstance(result, (int, float)):
+                    if isinstance(result, float):
+                        result = Expression.remove_blank_floatingpoints(result)
+                    self.__set_to_normal_state(current_char=result, old_char=None)
+                elif isinstance(result, (str, complex)):
+                    self.__set_to_normal_state(current_char=0, old_char=None)
+                    if isinstance(result, complex):
+                        result = "Impossibile fuori dominio"
         return result
+
+    # def __calculate_result_n_root(self, expression: str) -> Union[int, float, str]:
+    #     if not ("√" in expression):
+    #         result = Calculation.calculate(expression)
 
     # Serve per modificare l'ho stato della calcolatrice modificando gli utilmi due caratteri inseriti, questo serve per gestire gli errori
     def __set_to_normal_state(self, current_char, old_char):
@@ -190,8 +217,32 @@ class ButtonsFrame(ttk.Frame):
             if isinstance(result, (int, float)):
                 if ndigits > 0:
                     result = round(result, ndigits)
+                if isinstance(result, float):
+                    result = Expression.remove_blank_floatingpoints(result)
                 display.set_text(str(result))
             elif isinstance(result, str):
                 info_display.set_err(result)
+        elif isinstance(result, str):
+            info_display.set_err(result)
+
+    def __calculate_n_power(self):
+        display = self.master.components["display"]
+        info_display = self.master.components["info_display"]
+        display_current_text = display.get_text()
+        result = self.__calculate_result(display_current_text)
+
+        if isinstance(result, (int, float)):
+            display.set_text(f"({result})^")
+        elif isinstance(result, str):
+            info_display.set_err(result)
+
+    def __calculate_n_root(self):
+        display = self.master.components["display"]
+        info_display = self.master.components["info_display"]
+        display_current_text: str = display.get_text()
+        result = self.__calculate_result(display_current_text)
+
+        if isinstance(result, (int, float)):
+            display.set_text(f"√({result})")
         elif isinstance(result, str):
             info_display.set_err(result)

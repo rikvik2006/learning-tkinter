@@ -70,6 +70,7 @@ class Expression:
 
         return True
 
+    # Converte una lista di numeri stringhe in numeri, se sono interi li converte in interi, se sono float li converte in float
     @staticmethod
     def convert_string_numbers_to_numbers(
         numbers: list[str],
@@ -82,6 +83,13 @@ class Expression:
             else:
                 converted_numbers.append(int(number))
         return converted_numbers
+
+    # Rimuove il punto decimale da un numero se è un intero es: 1.0 -> 1
+    def remove_blank_floatingpoints(number: float) -> Union[int, float]:
+        """Removes the floating point from a number if it is an integer"""
+        if number.is_integer():
+            return int(number)
+        return number
 
     @staticmethod
     def get_expressions_numbers(expression: str) -> list[Union[int, float]]:
