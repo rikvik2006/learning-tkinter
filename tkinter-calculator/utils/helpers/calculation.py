@@ -40,6 +40,22 @@ class Calculation:
 
         return result
 
+    def n_square_root(
+        number: Union[int, float], n: Union[int, float]
+    ) -> Union[int, float, str]:
+        try:
+            result = number ** (1 / n)
+            if isinstance(result, complex):
+                result = "Impossibile fuori dominio"
+        except ValueError as err:
+            print("❌", err)
+            result = "Impossibile fuori dominio"
+        except Exception as err:
+            print("❌", err.__doc__)
+            result = "Errore di sintassi"
+
+        return result
+
     # Calcola la la potenza quadrata di un numero
     @staticmethod
     def square_power(number: Union[int, float]) -> Union[int, float, str]:

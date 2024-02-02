@@ -1,3 +1,4 @@
+from operator import indexOf
 from tkinter import ttk
 from components.CLabel import CLabel
 from utils.helpers.expression import Expression
@@ -68,6 +69,15 @@ class DisplayFrame(ttk.Frame):
         else:
             self.display.value.set(current_text + text)
 
+    def add_backwards_text(self, text: str) -> None:
+        current_text = self.display.value.get()
+        if current_text == "0":
+            self.display.value.set(text)
+        else:
+            index = current_text.find("√")
+            new_string = current_text[:index] + text + current_text[index:]
+            self.display.value.set(new_string)
+
     # Elimina il testo attuale del display
     def clear(self) -> None:
         self.display.value.set("0")
@@ -79,3 +89,13 @@ class DisplayFrame(ttk.Frame):
             self.display.value.set(current_text[:-1])
         else:
             self.display.value.set("0")
+
+    def backspace_reverse(self) -> None:
+        current_text = self.display.value.get()
+        if current_text[0] == "√":
+            return
+        else:
+            if len(current_text) > 1:
+                self.display.value.set(current_text[1:])
+            else:
+                self.display.value.set("0")

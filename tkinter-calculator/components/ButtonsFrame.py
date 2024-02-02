@@ -18,6 +18,7 @@ class ButtonsFrame(ttk.Frame):
         self.current_char = 0
         self.old_char = None
         self.allows_write = True
+        self.write_before = False
 
     def create_buttons(self, buttons):
         self.widget_buttons = []
@@ -55,12 +56,17 @@ class ButtonsFrame(ttk.Frame):
         info_display = self.master.components["info_display"]
         if event.widget["text"] == "C":
             self.__set_to_normal_state(current_char=0, old_char=None)
+            self.write_before = False
             display.clear()
         elif event.widget["text"] == "=":
             self.__on_click_equal()
         elif event.widget["text"] == "BC":
             self.__set_to_normal_state(current_char=self.old_char, old_char=None)
-            display.backspace()
+            if not self.write_before:
+                display.backspace()
+            else:
+                print("Write backward")
+                display.backspace_reverse()
         elif event.widget["text"] == "MEM":
             self.__display_memory()
         elif event.widget["text"] == "STO":
@@ -87,7 +93,7 @@ class ButtonsFrame(ttk.Frame):
         elif event.widget["text"] == "√":
             self.__display_result(calculation=Calculation.square_root, ndigits=4)
         elif event.widget["text"] == "ⁿ√":
-            pass
+            self.__calculate_n_root()
         elif event.widget["text"] == "1/x":
             # self.__calculate_mutual()
             self.__display_result(calculation=Calculation.mutual, ndigits=6)
@@ -98,7 +104,10 @@ class ButtonsFrame(ttk.Frame):
             button_text = event.widget["text"]
             self.old_char = self.current_char
             self.current_char = button_text
-            display.add_text(event.widget["text"])
+            if not self.write_before:
+                display.add_text(event.widget["text"])
+            else:
+                display.add_backwards_text(event.widget["text"])
             if Expression.is_symbol(self.current_char) and Expression.is_symbol(
                 self.old_char
             ):
@@ -162,7 +171,7 @@ class ButtonsFrame(ttk.Frame):
             info_display.set_err(result)
 
     def __calculate_result(self, expression: str) -> Union[int, float, str]:
-        if not ("^" in expression):
+        if not ("^" in expression) and not ("√" in expression):
             result = Calculation.calculate(expression)
             print("➕", result)
             print("🫶", type(result))
@@ -173,7 +182,7 @@ class ButtonsFrame(ttk.Frame):
                 self.__set_to_normal_state(current_char=result, old_char=None)
             elif isinstance(result, str):
                 self.__set_to_normal_state(current_char=0, old_char=None)
-        else:
+        elif "^" in expression and not ("√" in expression):
             base, exponent = expression.split("^")
             exponent = Calculation.calculate(exponent)
             if isinstance(exponent, str):
@@ -192,6 +201,28 @@ class ButtonsFrame(ttk.Frame):
                     self.__set_to_normal_state(current_char=0, old_char=None)
                     if isinstance(result, complex):
                         result = "Impossibile fuori dominio"
+        elif "√" in expression and not ("^" in expression):
+            self.write_before = False
+            root_exponent, root_number = expression.split("√")
+            root_exponent = Calculation.calculate(root_exponent)
+            if isinstance(root_exponent, str):
+                self.__set_to_normal_state(current_char=0, old_char=None)
+                return root_exponent
+            elif isinstance(root_exponent, (int, float)):
+                root_number = root_number.replace("(", "").replace(")", "")
+                root_number = Expression.convert_string_numbers_to_numbers(
+                    [root_number]
+                )[0]
+                result = Calculation.n_square_root(root_number, root_exponent)
+
+                if isinstance(result, (int, float)):
+                    if isinstance(result, float):
+                        result = Expression.remove_blank_floatingpoints(result)
+                    self.__set_to_normal_state(current_char=result, old_char=None)
+                elif isinstance(result, str):
+                    self.__set_to_normal_state(current_char=0, old_char=None)
+        else:
+            result = "Errore di sintassi"
         return result
 
     # def __calculate_result_n_root(self, expression: str) -> Union[int, float, str]:
@@ -242,7 +273,11 @@ class ButtonsFrame(ttk.Frame):
         display_current_text: str = display.get_text()
         result = self.__calculate_result(display_current_text)
 
+        print("🔗", self.write_before)
+        self.write_before = True
         if isinstance(result, (int, float)):
             display.set_text(f"√({result})")
         elif isinstance(result, str):
             info_display.set_err(result)
+            self.write_before = False
+            print("🔗", self.write_before)
