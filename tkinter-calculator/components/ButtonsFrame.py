@@ -38,7 +38,6 @@ class ButtonsFrame(ttk.Frame):
                 button_text, colspan = button_data.split("|")
                 rowspan = 1
                 if button_text == "=":
-                    print(colspan)
                     colspan, rowspan = colspan.split("x")
                 button = CalculatorButton(
                     master=self,

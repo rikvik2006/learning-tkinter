@@ -16,6 +16,10 @@ class App(tk.Tk):
         self.style = ttk.Style()
         self.configure_style()
         self.title("Black Calculator")
+        try:
+            self.iconbitmap("./img/Black-Logo.ico")
+        except Exception as e:
+            print(e)
 
         self.layout = [
             [
