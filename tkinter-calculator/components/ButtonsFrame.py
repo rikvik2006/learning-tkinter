@@ -34,16 +34,28 @@ class ButtonsFrame(ttk.Frame):
         #         button.grid(row=row_index, column=column_index, sticky="nsew")
 
         for row_index, row in enumerate(buttons):
-            for column_index, button_text in enumerate(row):
+            for column_index, button_data in enumerate(row):
+                button_text, colspan = button_data.split("|")
+                rowspan = 1
+                if button_text == "=":
+                    print(colspan)
+                    colspan, rowspan = colspan.split("x")
                 button = CalculatorButton(
                     master=self,
                     text=button_text,
                     style="Buttons.TButton",
+                    padding="10 10 10 10",
                     # command=lambda text=button_text: self.master.components[
                     #     "display"
                     # ].add_text(text),
                 )
-                button.grid(row=row_index, column=column_index, sticky="nsew")
+                button.grid(
+                    row=row_index,
+                    column=column_index,
+                    columnspan=colspan,
+                    rowspan=rowspan,
+                    sticky="nsew",
+                )
                 self.widget_buttons.append(button)
 
                 # Aggiungo al bottone l'evento di click con il tasto sinitro del mouse

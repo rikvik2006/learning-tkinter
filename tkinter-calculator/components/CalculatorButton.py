@@ -6,6 +6,7 @@ from turtle import backward, color
 class CalculatorButton(ttk.Button):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+
         # Add some style
         self.style = ttk.Style()
         # self.style.theme_use("alt")
