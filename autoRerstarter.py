@@ -26,7 +26,7 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(
         event_handler,
-        path=Path.joinpath(Path(__file__).parent.absolute(), "tkinter-calculator"),
+        path=Path.joinpath(Path(__file__).parent.absolute(), "classe-immobile"),
         recursive=True,
     )
     observer.start()
