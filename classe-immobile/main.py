@@ -10,10 +10,11 @@ class App(tkinter.Tk):
         super().__init__(**kwargs)
         self.title("Registra Immobili")
         self.create_input_frame()
+        self.create_console()
 
     def create_input_frame(self) -> None:
         self.input_frame = ttk.Frame(self)
-        self.input_frame.grid(row=1, column=1)
+        self.input_frame.grid(row=0, column=0, sticky="e")
         self.input_frame["padding"] = (10, 10, 10, 10)
         self.input_frame["relief"] = "groove"
 
@@ -61,10 +62,13 @@ class App(tkinter.Tk):
 
     def create_console(self):
         self.console_frame = ttk.Frame(self)
-        self.console_frame.grid(row=2, column=0)
+        self.console_frame.grid(row=1, column=0)
 
-        self.console = CLabel(self.console_frame, width=400, height=200)
-        self.console.grid(row=1, column=1)
+        self.console = CLabel(self.console_frame, text="Oggetto Oggetto")
+        self.console["padding"] = 7
+        self.console["relief"] = "groove"
+        self.console.grid(row=0, column=0)
+        self.console["height"] = 100
 
 
 if __name__ == "__main__":
