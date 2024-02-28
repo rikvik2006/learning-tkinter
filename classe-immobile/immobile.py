@@ -52,3 +52,7 @@ class Immobile:
         )
 
         return tassa_in_percentaule
+
+    def calcola_valore_totale(self):
+        valore_totale = self.calcola_valore() + self.calcola_tassa()
+        return valore_totale
