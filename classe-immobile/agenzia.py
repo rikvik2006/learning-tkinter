@@ -1,5 +1,7 @@
 from typing import Union
 from immobile import Immobile
+from garage import Garage
+from alloggio import Alloggio
 
 
 class Agenzia:
@@ -28,6 +30,12 @@ class Agenzia:
                 found_immobili.append(immobile)
 
         return found_immobili
+
+    def append_immobile(self, immobile: Union[Immobile, Alloggio, Garage]) -> None:
+        if not isinstance(immobile, (Immobile, Alloggio, Garage)):
+            raise ValueError("devi inserire un immobile di tipo Immobile")
+
+        self.__immobili.append(immobile)
 
     def get_immobile_by_price(
         self, low_range: float, high_range: float

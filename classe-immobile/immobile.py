@@ -10,6 +10,17 @@ class Immobile:
     ) -> None:
         self.inserisci(codice, estensione, costo_m_quadro, percentuale)
 
+    def __str__(self) -> str:
+        return f"""
+        -----------------------------
+        🏠 Immobile:
+            Codice: {self.__codice}
+            Estensione: {self.__estensione}
+            Costo Metro Quadro: {self.__costo_metro_quadro}
+            Percentaule di tasso: {self.__percentuale_tasse}
+        -----------------------------
+        """
+
     def set_codice(self, codice: str) -> None:
         self.__codice = codice
 
