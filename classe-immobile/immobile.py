@@ -9,17 +9,17 @@ class Immobile:
         percentuale: float,
     ) -> None:
         self.inserisci(codice, estensione, costo_m_quadro, percentuale)
+        self._type_name = "immobile"
 
     def __str__(self) -> str:
         return f"""
         -----------------------------
-        🏠 Immobile:
+        🏠 {self._type_name.capitalize()}:
             Codice: {self.__codice}
             Estensione: {self.__estensione}
             Costo Metro Quadro: {self.__costo_metro_quadro}
             Percentaule di tasso: {self.__percentuale_tasse}
-        -----------------------------
-        """
+        -----------------------------"""
 
     def set_codice(self, codice: str) -> None:
         self.__codice = codice
@@ -67,3 +67,6 @@ class Immobile:
     def calcola_valore_totale(self):
         valore_totale = self.calcola_valore() + self.calcola_tassa()
         return valore_totale
+
+    def get_type_name(self) -> str:
+        return self._type_name

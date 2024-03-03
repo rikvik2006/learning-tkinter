@@ -16,6 +16,7 @@ class Menu:
 
         while self.active:
             self.__print_menu()
+            self.__manage_menu_choiche()
 
     def __define_immobile(self) -> None:
         # Codice, Estensione, Costo, Percentaule
@@ -134,46 +135,72 @@ class Menu:
                 print("❌ Insersci un numero valido")
 
         if choice == 1:
-            self.print_immobile_by_code()
+            self.__print_immobile_by_code()
         elif choice == 2:
-            self.print_immobile_by_code()
+            self.__print_immobile_by_cost_rage()
         elif choice == 3:
-            self.__agenzia.get_immobile_by_max_extension()
+            immobili = self.__agenzia.get_immobile_by_max_extension()
+            self.__print_immobili(immobili)
         elif choice == 4:
-            self.__agenzia.calculate_mean_tax()
+            mean_tax = self.__agenzia.calculate_mean_tax()
+            print(f"➗ La tassa media è pari al {mean_tax}%")
         elif choice == 5:
-            pass
+            self.__print_immobile_other_info()
         elif choice == 6:
-            self.exit_menu()
+            self.__exit_menu()
 
-    def exit_menu(self):
+    def __exit_menu(self):
         self.active = False
 
-    def print_immobile_by_code(self) -> None:
+    def __print_immobili(self, immobili: list[Immobile]) -> None:
+        for immobile in immobili:
+            print(immobile)
+
+    def __print_immobile_by_code(self) -> None:
         code = self.__input_str(
             "Insersci il codice dell immobile: ", "Insersci un codice valido"
         )
         immobili = self.__agenzia.get_immobile(codice=code)
         print(f"Sono stati trovati {len(immobili)} immobili")
-        for immobile in immobili:
-            print(immobile)
+        self.__print_immobili(immobili)
 
-    def print_immobile_by_cost_rage(self) -> None:
+    def __print_immobile_by_cost_rage(self) -> None:
         low_range = self.__input_float(
-            "Insersci il range di costo minimo",
+            "Insersci il range di costo minimo: ",
             "Insersci un costo valido",
             only_positive=(True, True),
         )
         high_range = self.__input_float(
-            "Insersci il range di costo massimo",
+            "Insersci il range di costo massimo: ",
             "Insersci un costo valido",
             only_positive=(True, True),
         )
 
         immobili = self.__agenzia.get_immobile_by_price(low_range, high_range)
         print(f"Sono stati trovati {len(immobili)} immobili")
+        self.__print_immobili(immobili)
+
+    def __print_immobile_other_info(self) -> None:
+        code = self.__input_str(
+            "Insersci il codice dell immobile: ",
+            "Insersci un codice valido",
+        )
+
+        immobili = self.__agenzia.get_immobile(code)
+        print(f"Sono stati trovati {len(immobili)} immobili")
+
         for immobile in immobili:
-            print(immobile)
+            total_cost = immobile.calcola_valore_totale()
+            extension = immobile.get_estensione()
+            type_name = immobile.get_type_name()
+            immobile_code = immobile.get_codice()
+
+            print(
+                f"🫰 Il costo totale del {type_name} con codice {immobile_code} è pari a {total_cost} euro"
+            )
+            print(
+                f"🏬 L'estensione dell {type_name} con codice {immobile_code} è pari a {extension} metri quadrati"
+            )
 
     def __input_str(self, input_label: str, error_message: str) -> str:
         valid = False
