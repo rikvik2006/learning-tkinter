@@ -20,8 +20,7 @@ class Veicolo(ABC):
 
     def __str__(self) -> str:
         return f"""\
-Marca: {self.__marca} - Modello: {self.__modello} - Prezzo
-"""
+Marca: {self.__marca} - Modello: {self.__modello} - Prezzo: {self.get_prezzo()}"""
 
     def set_targa(self, targa: str) -> None:
         self.__targa = targa
