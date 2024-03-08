@@ -12,16 +12,16 @@ class Alloggio(Immobile):
     ) -> None:
         super().__init__(codice, estensione, costo_m_quadro, percentuale)
 
+        self._type_name = "alloggio"
         self.set_numero_stanze(numero_stanze)
 
     def __str__(self) -> str:
         old_str = super().__str__()
-        old_str.replace("Immobile", "Alloggio")
-        old_str.replace("-----------------------------", "")
+        old_str = old_str.replace("Immobile", self._type_name.capitalize())
+        old_str = old_str.replace("-----------------------------", "")
 
-        new_str = f"""{old_str}
-            Numero di stanze: {self.__numero_stanze}
-            -----------------------------
+        new_str = f"""\t-----------------------------{old_str}    Numero di stanze: {self.__numero_stanze}
+        -----------------------------
         """
 
         return new_str

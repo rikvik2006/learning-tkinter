@@ -13,16 +13,17 @@ class Garage(Immobile):
         interrato: bool,
     ) -> None:
         super().__init__(codice, estensione, costo_m_quadro, percentuale)
+
+        self._type_name = "garage"
         self.set_interato(interrato)
 
     def __str__(self) -> str:
         old_str = super().__str__()
-        old_str.replace("Immobile", "Garage")
-        old_str.replace("-----------------------------", "")
+        old_str = old_str.replace("Immobile", self._type_name.capitalize())
+        old_str = old_str.replace("-----------------------------", "")
 
-        new_str = f"""{old_str}
-            È interato: {self.__interrato}
-            -----------------------------
+        new_str = f"""\t-----------------------------{old_str}    È interato: {self.__interrato}
+        -----------------------------
         """
 
         return new_str
