@@ -26,7 +26,9 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(
         event_handler,
-        path=Path.joinpath(Path(__file__).parent.absolute(), "classe-immobile"),
+        path=Path.joinpath(
+            Path(__file__).parent.absolute(), "applicazione-concessionaria"
+        ),
         recursive=True,
     )
     observer.start()
