@@ -1,12 +1,15 @@
 import tkinter as tk
 from typing import Tuple
 import customtkinter as ctk
+from components.mainFrame import LoadComponents, MainFrame
 
 
 class App(ctk.CTk):
     def __init__(self, fg_color: str | Tuple[str, str] | None = None, **kwargs):
         super().__init__(fg_color, **kwargs)
         ctk.set_appearance_mode("dark")
+        self.configure(fg_color="#282830")
+        LoadComponents.loads(master=self)
 
 
 if __name__ == "__main__":
