@@ -1,7 +1,7 @@
 import tkinter as tk
 from typing import Tuple
 import customtkinter as ctk
-from components.mainFrame import LoadComponents, MainFrame
+from components.loadComponents import LoadComponents
 
 
 class App(ctk.CTk):
@@ -9,7 +9,7 @@ class App(ctk.CTk):
         super().__init__(fg_color, **kwargs)
         ctk.set_appearance_mode("dark")
         self.configure(fg_color="#282830")
-        LoadComponents.loads(master=self)
+        LoadComponents().loads(master=self)
 
 
 if __name__ == "__main__":
