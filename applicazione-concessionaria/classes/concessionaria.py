@@ -1,3 +1,4 @@
+from turtle import mode
 from typing import List
 
 from classes.autocarro import Autocarro
@@ -43,3 +44,40 @@ class Concessionaria:
             for veicolo in self.__veicoli
             if isinstance(veicolo, Motoveicolo)
         ]
+    
+    # TODO: Aggiungere controlli di tipo
+    def add_autoveicolo(
+            self,
+            targa: str,
+            marca: str,
+            modello: str,
+            n_posti: int,
+            prezzo_base: float,
+            numero_porte: int
+    ) -> None:
+        autoveicolo = Autoveicolo(targa, marca, modello, n_posti, prezzo_base, numero_porte)
+        self.__veicoli.append(autoveicolo)
+        
+    def add_autocarro(
+            self,
+            targa: str,
+            marca: str,
+            modello: str,
+            n_posti: int,
+            prezzo_base: float,
+            max_capacity: int
+    ) -> None:
+        autocarro = Autocarro(targa, marca, modello, n_posti, prezzo_base, max_capacity)
+        self.__veicoli.append(autocarro)
+
+    def add_motoveicolo(
+            self,
+            targa: str,
+            marca: str,
+            modello: str,
+            n_posti: int,
+            prezzo_base: float,
+            cilindrata: int
+    ) -> None:
+        motoveicolo = Motoveicolo(targa, marca, modello, n_posti, prezzo_base, cilindrata)
+        self.__veicoli.append(motoveicolo)

@@ -3,6 +3,7 @@ import customtkinter as ctk
 from components.clientSearchRow import ClientSearchRow 
 from components.numberOfVeicle import NumberOfVeicle
 from components.tableHeaderFrame import TableHeaderFrame
+from components.tableContainerFrame import TableContainerFrame
 from utils.types import LayoutPositionGrid
 
 from components.cbutton import CButton
@@ -39,6 +40,11 @@ class ClientTabFrame(ctk.CTkFrame):
                 "table_header_frame",
                 TableHeaderFrame,
                 LayoutPositionGrid(row=2, column=0, sticky="nsew")(),
+            ],
+            [
+                "table_container_frame",
+                TableContainerFrame,
+                LayoutPositionGrid(row=3, column=0, sticky="nsew")(),
             ]
         ]
         
