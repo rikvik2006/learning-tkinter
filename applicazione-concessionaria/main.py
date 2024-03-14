@@ -17,7 +17,7 @@ class App(ctk.CTk):
         self.components = {}
         self.__define_layout()
         self.__load_layout()
-        print("📦", self.components)
+        self.components["tab_view"].ungrid_operator_frame()
         
     def __define_layout(self):
         self.layout = [
