@@ -1,3 +1,4 @@
+from turtle import heading
 import customtkinter as ctk
 from components.styledHeaderLabel import StyledHeaderLabel 
 
@@ -8,7 +9,7 @@ class TableHeaderFrame(ctk.CTkFrame):
     def __init__(self, master, layout, **kwargs):
         super().__init__(master=master, **kwargs)
         self.grid(**layout, pady=(25, 0))
-        self.configure(fg_color="#9BB0C1")
+        # self.configure(fg_color="#9BB0C1")
         self.configure(fg_color="#33333A")
         self.__load_columns()
         
