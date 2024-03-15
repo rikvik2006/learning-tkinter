@@ -13,6 +13,7 @@ class App(ctk.CTk):
     def __init__(self, concessionaria: Concessionaria, fg_color: str | Tuple[str, str] | None = None, **kwargs):
         super().__init__(fg_color, **kwargs)
         ctk.set_appearance_mode("dark")
+        self.title("Black Concessionaria")
         self.configure(fg_color="#282830", padx=25, pady=25)
         self.__set_concessionaria(concessionaria)        
         self.__load_dummy_data()

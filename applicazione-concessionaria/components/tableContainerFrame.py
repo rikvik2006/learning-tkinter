@@ -73,11 +73,11 @@ class TableContainerFrame(ctk.CTkScrollableFrame):
 
             # Prediamo il dato specifico
             if isinstance(veicolo, Autoveicolo):
-                valore_specifico = f"N Porte: {veicolo.get_numero_porte()}"
+                valore_specifico = f"N° Porte: {veicolo.get_numero_porte()}"
             elif isinstance(veicolo, Autocarro): 
-                valore_specifico = f"Capacità massima: {veicolo.get_max_capacity()}"
+                valore_specifico = f"Capacità massima: {veicolo.get_max_capacity()} Q"
             elif isinstance(veicolo, Motoveicolo):
-                valore_specifico = f"Cilindrata: {veicolo.get_cilindrata()}"
+                valore_specifico = f"Cilindrata: {veicolo.get_cilindrata()} cm³"
             
             if not valore_specifico:
                 raise ValueError("la proprietà specifica per per il veicolo non è specificata. Sicuro di stare passando un Veicolo?")

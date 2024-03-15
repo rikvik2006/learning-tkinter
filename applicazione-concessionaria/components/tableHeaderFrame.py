@@ -1,5 +1,4 @@
 from typing import List, Dict
-from turtle import heading
 import customtkinter as ctk
 from components.styledHeaderLabel import StyledHeaderLabel 
 
@@ -25,7 +24,7 @@ class TableHeaderFrame(ctk.CTkFrame):
                 "padx": (40, 0)
             },
             {
-                "text": "Prezzo",
+                "text": "Prezzo (€)",
                 "padx": (100, 0)
             },
             {
@@ -41,7 +40,7 @@ class TableHeaderFrame(ctk.CTkFrame):
                 "padx": (100, 0)
             },
             {
-                "text": "Prezzo Base",
+                "text": "Prezzo Base (€)",
                 "padx": (100, 0)
             },
             {

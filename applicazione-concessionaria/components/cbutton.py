@@ -1,4 +1,3 @@
-from cgitb import text
 import customtkinter as ctk
 from typing import Any
 

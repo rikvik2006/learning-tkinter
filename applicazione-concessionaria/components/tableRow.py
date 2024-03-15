@@ -1,5 +1,3 @@
-from cgitb import text
-from turtle import width
 import customtkinter as ctk
 
 from components.styledHeaderLabel import StyledHeaderLabel
@@ -50,5 +48,5 @@ class TableRow(ctk.CTkFrame):
         last_widget_position = column_relative_position[-1]
         table_row_total_width = last_widget_width + last_widget_position + last_widget_padx_right
         self.configure(width=table_row_total_width)
-        self.master.configure(width=1539)
+        self.master.configure(width=1577)
         
