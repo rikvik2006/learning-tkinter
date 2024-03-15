@@ -1,4 +1,5 @@
 from msilib import Table
+from multiprocessing import Value
 import customtkinter as ctk
 from typing import List
 
@@ -17,15 +18,14 @@ class TableContainerFrame(ctk.CTkScrollableFrame):
         super().__init__(master=master, **kwargs)
         self.grid(**layout)
         # pady=(25, 0)
-        self.configure(fg_color="#EEA5A6")
-        self.__load_rows()
+        veicoli = self.master.master.master.master.get_concessionaria().get_veicoli()
+        self.configure(fg_color="transparent", height=600, border_width=-6)
+        self.__load_rows(veicoli)
         
     def __load_rows(self, veicoli: List[Veicolo]):
         self.rows = []
 
-        # veicoli = self.master.master.master.master.get_concessionaria().get_veicoli()
-        # print("💀",  veicoli)
-        for veicolo in veicoli:
+        for i, veicolo in enumerate(veicoli):
             targa = veicolo.get_targa()
             marca = veicolo.get_marca()
             modello = veicolo.get_modello()
@@ -34,6 +34,22 @@ class TableContainerFrame(ctk.CTkScrollableFrame):
             prezzo = veicolo.get_prezzo()
 
             # TODO: Prendere la proprietà speciale per i tipi di veicoli controllando il tipo dell instanza (isinstance)
+            if isinstance(veicolo, Autoveicolo):
+                valore_specifico = veicolo.get_numero_porte()
+            elif isinstance(veicolo, Autocarro): 
+                valore_specifico = veicolo.get_max_capacity()
+            elif isinstance(veicolo, Motoveicolo):
+                valore_specifico = veicolo.get_cilindrata()
+            
+            if not valore_specifico:
+                raise ValueError("la proprietà specifica per per il veicolo non è specificata. Sicuro di stare passando un Veicolo?")
 
-            data = RowTableData(model=modello, price=prezzo, nameplate=targa, brand=marca, number_seats=n_posti, base=prezzo_base, other=)
-            new_row = TableRow()
+            row_data = RowTableData(model=modello, price=prezzo, nameplate=targa, brand=marca, number_seats=n_posti, base=prezzo_base, other=valore_specifico)
+
+            row_frame = ctk.CTkFrame(master=self, fg_color="#33333A", height=60)
+            row_frame.grid(row=i, pady=(25, 0))
+
+            # row = TableRow(master=self, data=row_data)
+            # row.grid(row=i, column=0, sticky="nsew", pady=(25, 0))
+            row = TableRow(master=row_frame, data=row_data)
+            row.place(x=5, y=0)

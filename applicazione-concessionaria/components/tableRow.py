@@ -1,4 +1,5 @@
 from cgitb import text
+from turtle import width
 import customtkinter as ctk
 
 from components.styledHeaderLabel import StyledHeaderLabel
@@ -10,7 +11,7 @@ class TableRow(ctk.CTkFrame):
 
     def __init__(self, master, data: RowTableData, **kwargs):
         super().__init__(master=master, **kwargs)
-        self.configure(fg_color="#33333A", )
+        self.configure(fg_color="transparent", height=60)
         self.__load_data(data)
         
 
@@ -18,14 +19,37 @@ class TableRow(ctk.CTkFrame):
         data_dict = data()
         self.data_columns = []
         
-        image = StyledHeaderLabel(self, text="IMAGE")
-        image.grid(row=0, column=0)
-        self.data_columns.append(image)
+        table_header_frame = self.master.master.master.master.master.components["table_header_frame"]
+        column_relative_position = table_header_frame.get_header_labels_x_position()
+        n_columns = len(table_header_frame.get_grid_template_column())
+        print("📦 Column relative position", column_relative_position)
+
+        # image = StyledHeaderLabel(self, text="IMAGE")
+        # image.grid(row=0, column=0)
+        # self.data_columns.append(image)
         
         for i, data_column in enumerate(data_dict):
             value = data_column["value"]
             padx = data_column["padx"]
 
-            new_data = StyledHeaderLabel(self, text=value, height="60")
-            new_data.grid(row=0, column=i + 1, padx=padx)
+            if i == 0:
+                new_data = StyledHeaderLabel(self, image=value, text="", height=60)
+                # new_data.grid(row=0, column=i, padx=padx)
+                # place_y = ((10 + 60) * i)
+                new_data.place(x=column_relative_position[i], y=0)
+            else:
+                new_data = StyledHeaderLabel(self, text=value, height=60)
+                # new_data.grid(row=0, column=i, padx=padx)
+                # place_y = ((10 + 60) * i)
+                new_data.place(x=column_relative_position[i], y=0)
+
+            new_data.update_idletasks()
+            self.data_columns.append(new_data)
+        
+        last_widget_width = self.data_columns[-1].winfo_width()
+        last_widget_padx_right = data_dict[-1]["padx"][1]
+        last_widget_position = column_relative_position[-1]
+        table_row_total_width = last_widget_width + last_widget_position + last_widget_padx_right
+        self.configure(width=table_row_total_width)
+        self.master.configure(width=1358)
         

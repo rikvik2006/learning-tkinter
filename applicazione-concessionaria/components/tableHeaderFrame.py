@@ -1,3 +1,4 @@
+from typing import List, Dict
 from turtle import heading
 import customtkinter as ctk
 from components.styledHeaderLabel import StyledHeaderLabel 
@@ -59,3 +60,13 @@ class TableHeaderFrame(ctk.CTkFrame):
             new_column = StyledHeaderLabel(self, text=text)
             new_column.grid(row=0, column=i, padx=padx) 
             self.columns.append(new_column)
+        
+    def get_header_labels_x_position(self) -> List[int]:
+        relative_postion = []
+        for column_label in self.columns:
+            relative_postion.append(column_label.winfo_x())
+        
+        return relative_postion
+    
+    def get_grid_template_column(self) -> List[Dict]:
+        return self.grid_template_columns
