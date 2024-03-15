@@ -1,5 +1,3 @@
-from msilib import Table
-from multiprocessing import Value
 import customtkinter as ctk
 from typing import List
 
@@ -18,20 +16,28 @@ class TableContainerFrame(ctk.CTkScrollableFrame):
         super().__init__(master=master, **kwargs)
         self.grid(**layout)
         self.configure(fg_color="transparent", height=600, border_width=-6)
-        combo_box = self.master.master.master.components["client_search_row"].search_combobox
-        filtered_veicoli = combo_box.get()
-        self.rows = []
-        self.__get_veicoli_and_load(filtered_veicoli)
-        self.__combobox_binding() 
+        
+        self.__define_property()
 
+        filtered_veicoli = self.__get_combobox_value()
+        self.__get_veicoli_and_load(filtered_veicoli)
+        self.__combobox_binding()
+        self.__bind_search_bar()
+    
+    def __define_property(self):
+        self.rows = []
+
+    
     def __get_veicoli_and_load(self, choiche: str):
         # Sto entrando dentro tanti master perché il componente che estende questa classe e a sua volta fatto da diversi altri componenti estesi
         print("🌟", choiche)
-        
-        # Rimuoviamo le righe precedentemente caricate
-        self.__ungrid_rows()
 
         # Prendiamo i rispettivi veicoli controllando il valore nella combobox
+        veicoli = self.__get_veicoli(choiche=choiche)        
+        self.__load_rows(veicoli)
+
+
+    def __get_veicoli(self, choiche: str) -> List[Veicolo]:
         veicoli = self.master.master.master.master.get_concessionaria().get_veicoli()
         if choiche.lower() == "Auto Veicoli".lower():
             veicoli = self.master.master.master.master.get_concessionaria().get_autoveicolo()
@@ -40,14 +46,22 @@ class TableContainerFrame(ctk.CTkScrollableFrame):
         elif choiche.lower() == "Moto Veicoli".lower():
             veicoli = self.master.master.master.master.get_concessionaria().get_motoveicolo()
 
-        number_of_veicles = len(veicoli)
-        self.__update_number_of_veicles(number_of_veicles)
-        
-        self.__load_rows(veicoli)
+        return veicoli
+    
+    def __get_combobox_value(self) -> str:
+        combo_box = self.master.master.master.components["client_search_row"].search_combobox
+        filtered_veicoli = combo_box.get()
+
+        return filtered_veicoli
     
     # Carica le righe nella tabella, data una lista di Veicoli
     def __load_rows(self, veicoli: List[Veicolo]):
+        # Rimuoviamo le righe precedentemente caricate
+        self.__ungrid_rows()
 
+        number_of_veicles = len(veicoli)
+        self.__update_number_of_veicles(number_of_veicles)
+        
         for i, veicolo in enumerate(veicoli):
             # Prediamo i dati dalla classe
             targa = veicolo.get_targa()
@@ -59,11 +73,11 @@ class TableContainerFrame(ctk.CTkScrollableFrame):
 
             # Prediamo il dato specifico
             if isinstance(veicolo, Autoveicolo):
-                valore_specifico = veicolo.get_numero_porte()
+                valore_specifico = f"N Porte: {veicolo.get_numero_porte()}"
             elif isinstance(veicolo, Autocarro): 
-                valore_specifico = veicolo.get_max_capacity()
+                valore_specifico = f"Capacità massima: {veicolo.get_max_capacity()}"
             elif isinstance(veicolo, Motoveicolo):
-                valore_specifico = veicolo.get_cilindrata()
+                valore_specifico = f"Cilindrata: {veicolo.get_cilindrata()}"
             
             if not valore_specifico:
                 raise ValueError("la proprietà specifica per per il veicolo non è specificata. Sicuro di stare passando un Veicolo?")
@@ -95,3 +109,20 @@ class TableContainerFrame(ctk.CTkScrollableFrame):
     def __update_number_of_veicles(self, length_list: int):
         number_veicle_frame = self.master.master.master.components["number_of_veicle"]
         number_veicle_frame.update_number(length_list)
+
+    def __search_by_nameplate(self, query: str):
+        combobox_value = self.__get_combobox_value()
+        veicoli = self.__get_veicoli(combobox_value)
+
+        filtered_veicoli = []
+        for veicolo in veicoli:
+            match = veicolo.get_targa().startswith(query)
+            if match:
+                filtered_veicoli.append(veicolo)
+        
+        self.__load_rows(filtered_veicoli)
+
+
+    def __bind_search_bar(self):
+        search_entry = self.master.master.master.components["client_search_row"].search_entry
+        search_entry.bind("<KeyRelease>", lambda event: self.__search_by_nameplate(search_entry.get().upper()))
