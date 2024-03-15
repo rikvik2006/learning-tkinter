@@ -46,7 +46,7 @@ class TableHeaderFrame(ctk.CTkFrame):
             },
             {
                 "text": "Altro",
-                "padx": (100, 20)
+                "padx": (100, 200)
             },
             
         ]

@@ -21,7 +21,7 @@ class RowTableData():
     """Type for table data in client tab"""
 
     # type: Literal["autovettura", "autocarro", "motovettura"]
-    def __init__(self, model: str, price: float, nameplate: str, brand: str, number_seats: int, base: float, other: Union[int, float, None]) -> None:
+    def __init__(self, model: str, price: float, nameplate: str, brand: str, number_seats: int, base: float, other: str) -> None:
         self.__type = type
         self.__model = model
         self.__price = price
