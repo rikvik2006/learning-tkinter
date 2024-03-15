@@ -20,24 +20,22 @@ class TableRow(ctk.CTkFrame):
         self.data_columns = []
         
         table_header_frame = self.master.master.master.master.master.components["table_header_frame"]
+        # Prediamo la posizione relativa in pixel delle colonne nel header, in modo tale da posizionare i valori allineati
         column_relative_position = table_header_frame.get_header_labels_x_position()
-        n_columns = len(table_header_frame.get_grid_template_column())
-        print("📦 Column relative position", column_relative_position)
 
-        # image = StyledHeaderLabel(self, text="IMAGE")
-        # image.grid(row=0, column=0)
-        # self.data_columns.append(image)
         
         for i, data_column in enumerate(data_dict):
             value = data_column["value"]
             padx = data_column["padx"]
 
             if i == 0:
+                # Renderizziamo l'immagine
                 new_data = StyledHeaderLabel(self, image=value, text="", height=60)
                 # new_data.grid(row=0, column=i, padx=padx)
                 # place_y = ((10 + 60) * i)
                 new_data.place(x=column_relative_position[i], y=0)
             else:
+                # Renderiziamo i dati                
                 new_data = StyledHeaderLabel(self, text=value, height=60)
                 # new_data.grid(row=0, column=i, padx=padx)
                 # place_y = ((10 + 60) * i)
@@ -46,6 +44,7 @@ class TableRow(ctk.CTkFrame):
             new_data.update_idletasks()
             self.data_columns.append(new_data)
         
+        # Calcoliamo la grandezza del nostro Frame, e di quello padre, dato che utilizzando il metodo place per posizione gli elementi perdiamo la grandezza dinamica
         last_widget_width = self.data_columns[-1].winfo_width()
         last_widget_padx_right = data_dict[-1]["padx"][1]
         last_widget_position = column_relative_position[-1]

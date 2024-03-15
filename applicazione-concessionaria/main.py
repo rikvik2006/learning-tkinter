@@ -49,17 +49,32 @@ class App(ctk.CTk):
     
     def get_concessionaria(self) -> Concessionaria:
         return self.__concessionaria
-
-    def __load_dummy_data(self):
-        for i in range(0, 3):
-           self.__concessionaria.add_autoveicolo("AB 013 CF", "Smart", "Smart Eletrica 500", 4, float(7500),  3)
-           self.__concessionaria.add_motoveicolo("CA 22O NE", "Piagio", "Piagio di Maradona", 2, 23.3, 150)
-           self.__concessionaria.add_autocarro("GG 104 FR", "Piagio", "Piagio di Maradona", 2, 23.3, 150)
+        
         
     def __load_layout(self):
         for name, component, layout in self.layout:
             self.components[name] = component(master=self, layout=layout)
                 
+    def __load_dummy_data(self):
+        self.__concessionaria.add_motoveicolo("XV 934 ML", "Kawasaki", "Kawasaki Ninja", 2, 4974.75, 816)
+        self.__concessionaria.add_motoveicolo("EJ 754 SM", "Kawasaki", "Kawasaki YZF-R", 1, 11998.69, 1063)
+        self.__concessionaria.add_autoveicolo("XN 144 AI", "Volkswagen", "Volkswagen Golf", 2, 13613.85, 3)
+        self.__concessionaria.add_autoveicolo("AV 501 JT", "Volkswagen", "Volkswagen Panda", 5, 17787.87, 5)
+        self.__concessionaria.add_autoveicolo("NU 557 EA", "Ford", "Ford Focus", 2, 9670.4, 5)
+        self.__concessionaria.add_autocarro("NE 759 BC", "MAN", "MAN Eurocargo", 2, 42081.67, 2997)
+        self.__concessionaria.add_motoveicolo("FM 893 SF", "Honda", "Honda Ninja", 1, 5739.09, 380)
+        self.__concessionaria.add_autoveicolo("MP 098 VN", "Renault", "Renault Panda", 4, 25730.94, 3)
+        self.__concessionaria.add_autoveicolo("OS 193 QO", "Ford", "Ford Focus", 2, 12638.76, 5)
+        self.__concessionaria.add_autoveicolo("WO 382 HO", "Toyota", "Toyota Golf", 4, 14716.73, 3)
+        self.__concessionaria.add_motoveicolo("ZJ 081 CO", "Honda", "Honda GSX-R", 1, 7384.33, 128)
+        self.__concessionaria.add_autoveicolo("XT 263 AM", "Fiat", "Fiat Golf", 4, 24111.74, 5)
+        self.__concessionaria.add_autoveicolo("YB 538 BO", "Toyota", "Toyota Panda", 3, 8544.43, 3)
+        self.__concessionaria.add_motoveicolo("KR 329 XY", "Yamaha", "Yamaha CBR", 1, 6442.67, 329)
+        self.__concessionaria.add_autoveicolo("KA 110 EN", "Volkswagen", "Volkswagen Focus", 2, 15107.9, 3)
+        self.__concessionaria.add_motoveicolo("AQ 869 JZ", "Suzuki", "Suzuki CBR", 2, 7334.49, 331)
+        self.__concessionaria.add_autoveicolo("GH 228 KT", "Fiat", "Fiat Panda", 5, 14524.4, 3)
+        self.__concessionaria.add_autocarro("YA 793 FA", "MAN", "MAN Actros", 2, 65586.23, 1218)
+        self.__concessionaria.add_autoveicolo("UB 978 IX", "Volkswagen", "Volkswagen Panda", 3, 11783.17, 4)
 
             
 

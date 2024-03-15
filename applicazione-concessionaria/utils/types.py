@@ -25,7 +25,7 @@ class RowTableData():
         self.__type = type
         self.__model = model
         self.__price = price
-        self.__nameplate = nameplate,
+        self.__nameplate = nameplate
         self.__brand = brand
         self.__number_seats = number_seats
         self.__base = base,
